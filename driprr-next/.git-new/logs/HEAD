@@ -1,0 +1,4 @@
+0000000000000000000000000000000000000000 4a616117395c9aa4a14d9cdbe85514d8654dc809 Pratham <prathamph123@gmail.com> 1783028339 +0530	commit (initial): feat: driprr-next frontend — Next.js 15, Supabase auth, cart, checkout, orders, search, wishlist, saved addresses, real-time order tracking
+4a616117395c9aa4a14d9cdbe85514d8654dc809 557f5fd60a8fd42640349fcd074fc5ffb789f5b0 Pratham <prathamph123@gmail.com> 1783028370 +0530	commit: chore: remove internal .git-new from tracking
+557f5fd60a8fd42640349fcd074fc5ffb789f5b0 0000000000000000000000000000000000000000 Pratham <prathamph123@gmail.com> 1783028394 +0530	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 557f5fd60a8fd42640349fcd074fc5ffb789f5b0 Pratham <prathamph123@gmail.com> 1783028394 +0530	Branch: renamed refs/heads/master to refs/heads/main

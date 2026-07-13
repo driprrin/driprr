@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-border-low: var(--border-low);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-text-primary: var(--text-primary);
+  --color-text-dim: var(--text-dim);
+  --color-text-mute: var(--text-mute);
+  --color-success: var(--success);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ── Light theme (default) ─────────────────────────────────── */
+:root {
+  color-scheme: light;
+  --background:    #F1F1F1; /* As requested: #F1F1F1 */
+  --foreground:    #0D0D0F;
+  --surface-1:     #FFFFFF;
+  --surface-2:     #F0F0EC;
+  --border-low:    #E5E5E0;
+  --primary:       #E63E20;
+  --primary-soft:  #C7331A;
+  --on-primary:    #FFFFFF;
+  --text-primary:  #0D0D0F;
+  --text-dim:      #5C5C61;
+  --text-mute:     #9B9B9F;
+  --success:       #1F9D5C;
+  --rating-star:   #E6A83B;
+}
+
+/* ── Dark theme ─────────────────────────────────────────────── */
+html.dark {
+  color-scheme: dark;
+  --background:    #0A0A0B;
+  --foreground:    #F5F5F0;
+  --surface-1:     #161618;
+  --surface-2:     #1F1F22;
+  --border-low:    #2A2A2E;
+  --primary:       #FF4D2E;
+  --primary-soft:  #E63E20;
+  --on-primary:    #0A0A0B;
+  --text-primary:  #F5F5F0;
+  --text-dim:      #A1A1A6;
+  --text-mute:     #6B6B70;
+  --success:       #3ECF8E;
+  --rating-star:   #FFC94A;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border-low);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* ── Custom Premium Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.93); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Fly to Cart Animation ── */
+@keyframes flyToCart {
+  0% {
+    transform: translate3d(var(--start-x), var(--start-y), 0) scale(1.2);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(
+      calc(var(--start-x) + (var(--end-x) - var(--start-x)) * 0.45),
+      calc(var(--start-y) + (var(--end-y) - var(--start-y)) * 0.3 - 90px),
+      0
+    ) scale(1.4);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(var(--end-x), var(--end-y), 0) scale(0.1);
+    opacity: 0.15;
+  }
+}
+
+.flying-particle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 10px 25px rgba(230, 62, 32, 0.35), 0 0 0 3px var(--primary);
+  animation: flyToCart 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes bounceCustom {
+  0%, 100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  70% {
+    transform: scale(0.92);
+  }
+}
+
+.animate-bounce-custom {
+  animation: bounceCustom 0.4s ease-out;
+}
+

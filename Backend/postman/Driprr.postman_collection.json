@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "Driprr API",
+    "_postman_id": "driprr-api-collection",
+    "description": "Driprr Backend Intern Assessment — all endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "Create Store",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/stores", "host": ["{{baseUrl}}"], "path": ["stores"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Driprr Midtown\",\n  \"address\": \"789 Broadway, New York, NY 10003\",\n  \"phone\": \"+1-212-555-0303\",\n  \"isOpen\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "List All Stores",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/stores", "host": ["{{baseUrl}}"], "path": ["stores"] }
+          }
+        },
+        {
+          "name": "Get Store by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/stores/:id", "host": ["{{baseUrl}}"], "path": ["stores", ":id"], "variable": [{ "key": "id", "value": "<store-id>" }] }
+          }
+        },
+        {
+          "name": "Update Store",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/stores/:id", "host": ["{{baseUrl}}"], "path": ["stores", ":id"], "variable": [{ "key": "id", "value": "<store-id>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isOpen\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Store",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/stores/:id", "host": ["{{baseUrl}}"], "path": ["stores", ":id"], "variable": [{ "key": "id", "value": "<store-id>" }] }
+          }
+        },
+        {
+          "name": "List Products for Store",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/stores/:id/products", "host": ["{{baseUrl}}"], "path": ["stores", ":id", "products"], "variable": [{ "key": "id", "value": "<store-id>" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Sell Product (decrease stock)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/products/:id/sell", "host": ["{{baseUrl}}"], "path": ["products", ":id", "sell"], "variable": [{ "key": "id", "value": "<product-id>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/orders", "host": ["{{baseUrl}}"], "path": ["orders"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"<product-id>\",\n  \"quantity\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/orders/:id/status", "host": ["{{baseUrl}}"], "path": ["orders", ":id", "status"], "variable": [{ "key": "id", "value": "<order-id>" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONFIRMED\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

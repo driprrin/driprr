@@ -1,0 +1,43 @@
+# ── OS & Editor ──────────────────────────────
+.DS_Store
+Thumbs.db
+.kiro/
+.vscode/
+*.suo
+*.user
+.git-mono/
+
+# ── driprr-next (Next.js) ────────────────────
+driprr-next/node_modules/
+driprr-next/.next/
+driprr-next/.env
+driprr-next/.env.local
+driprr-next/.env*.local
+driprr-next/tsconfig.tsbuildinfo
+
+# ── Backend (NestJS) ─────────────────────────
+Backend/node_modules/
+Backend/dist/
+Backend/.env
+Backend/.env.*
+
+# ── Store Dashboard ──────────────────────────
+store-dashboard/node_modules/
+store-dashboard/.next/
+store-dashboard/.env
+store-dashboard/.env.local
+store-dashboard/.env*.local
+
+# ── Admin Dashboard ──────────────────────────
+admin-dashboard/node_modules/
+admin-dashboard/.next/
+admin-dashboard/.env
+admin-dashboard/.env.local
+admin-dashboard/.env*.local
+
+# ── Rider App ────────────────────────────────
+rider-app/node_modules/
+rider-app/.next/
+rider-app/.env
+rider-app/.env.local
+rider-app/.env*.local
