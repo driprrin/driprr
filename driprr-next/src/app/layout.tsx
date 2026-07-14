@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, email: false, address: false },
   alternates: { canonical: 'https://driprr.com' },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  verification: {
+    google: 'L2LjcLzysVozGuYkndImzyf71sUNrUwtpUCYsKPWtyM',
+  },
   openGraph: {
     type: 'website',
     siteName: 'Driprr',
