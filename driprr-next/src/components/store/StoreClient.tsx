@@ -178,16 +178,6 @@ export default function StoreClient({ slug }: { slug: string }) {
                       {p.originalPrice > p.price && <span className="text-xs text-text-mute line-through">₹{p.originalPrice.toLocaleString("en-IN")}</span>}
                       {discount > 0 && <span className="text-xs font-semibold text-success">{discount}% off</span>}
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault(); e.stopPropagation();
-                        window.dispatchEvent(new CustomEvent("add-to-cart-animate", { detail: { x: e.clientX, y: e.clientY, image: p.imageUrls?.[0] } }));
-                        addItem({ id: p.id, name: p.name, brand: p.brand, price: p.price, image: p.imageUrls?.[0] ?? "" });
-                      }}
-                      className="mt-2 w-full py-1.5 rounded-lg bg-surface-1 border border-border-low text-xs font-semibold hover:bg-primary hover:text-on-primary hover:border-primary transition-colors"
-                    >
-                      Add to bag
-                    </button>
                   </div>
                 </Link>
               );
