@@ -278,7 +278,7 @@ export default function OrdersPage() {
             <Loader2 size={14} className="text-text-mute animate-spin" />
           )}
           {wsStatus === "disconnected" && (
-            <WifiOff size={14} className="text-text-mute" title="Reconnecting..." />
+            <WifiOff size={14} className="text-text-mute" />
           )}
         </div>
       </header>
