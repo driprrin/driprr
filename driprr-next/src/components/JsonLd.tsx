@@ -26,6 +26,47 @@ export function OrganizationJsonLd() {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
+export function LocalBusinessJsonLd() {
+  const city = "Hubli-Dharwad";
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'Driprr',
+    description: 'Hyperlocal fashion delivery from nearby stores in 30-90 minutes',
+    url: 'https://driprr.com',
+    areaServed: { '@type': 'City', name: city, addressRegion: 'Karnataka', addressCountry: 'IN' },
+    priceRange: '₹₹',
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
+export function FAQSchema({ faqs }: { faqs: { q: string; a: string }[] }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
+export function BreadcrumbSchema({ items }: { items: { name: string; url: string }[] }) {
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
+}
+
 export function ProductJsonLd({ product }: { product: { name: string; brand: string; price: number; originalPrice: number; description?: string; imageUrls?: string[]; id: string; inStock?: boolean } }) {
   const schema = {
     '@context': 'https://schema.org',

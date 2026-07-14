@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Nunito } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CartFlyAnimation from "@/components/layout/CartFlyAnimation";
-import { WebsiteJsonLd, OrganizationJsonLd } from "@/components/JsonLd";
+import { WebsiteJsonLd, OrganizationJsonLd, LocalBusinessJsonLd } from "@/components/JsonLd";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
@@ -73,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GoogleAnalytics />
         <WebsiteJsonLd />
         <OrganizationJsonLd />
+        <LocalBusinessJsonLd />
         <ThemeProvider>
           {children}
           <CartFlyAnimation />

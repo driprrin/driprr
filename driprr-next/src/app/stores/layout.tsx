@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
 
+const city = "Hubli-Dharwad";
+
 export const metadata: Metadata = {
-  title: 'Nearby Fashion Stores',
-  description: 'Discover fashion stores near you and shop products available for fast local delivery on Driprr.',
+  title: `Fashion Stores in ${city}`,
+  description: `Discover local fashion stores in ${city} delivering through Driprr. Shop top wear, bottom wear & footwear in 30-90 minutes.`,
   alternates: { canonical: 'https://driprr.com/stores' },
 };
 
