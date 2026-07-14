@@ -442,7 +442,7 @@ export default function ProductsPage() {
     import("@/lib/axios").then(({ default: api }) => {
       api.patch(`/products/${id}/publish`).catch(() => {
         // Revert on failure
-        setProducts((prev) => prev.map((p) => p.id === id ? { ...p, published: !p.published } : p));
+        setProducts(products.map((p) => p.id === id ? { ...p, published: !p.published } : p));
       });
     });
   }
