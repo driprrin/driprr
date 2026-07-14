@@ -79,7 +79,7 @@ export default function StoresPage() {
       <main className="max-w-6xl mx-auto px-5 pt-8 relative z-10">
         {/* SEO intro — always rendered server-side */}
         <p className="text-sm text-text-dim leading-relaxed mb-6">
-          Every store on Driprr is a real, verified fashion retailer in Hubli-Dharwad. Browse stores near you and get their in-stock products delivered in 30-90 minutes.
+          Every store on Driprr is a real, verified fashion retailer. Browse stores near you and get their in-stock products delivered in 30-90 minutes.
         </p>
 
         {loading ? (

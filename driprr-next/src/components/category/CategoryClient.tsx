@@ -217,15 +217,14 @@ function FilterDrawer({
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function CategoryClient({ slug }: { slug: string }) {
   const label = slugLabels[slug] ?? slug.replace(/-/g, " ");
-  const city = "Hubli-Dharwad";
   const { addItem } = useCartStore();
   const { toggleItem, isWishlisted } = useWishlistStore();
 
   // SEO intro copy per category
   const introMap: Record<string, string> = {
-    "top-wear": `Shop t-shirts, shirts, hoodies and jackets from local stores across ${city}, delivered to your door in 30-90 minutes. Every item ships from a nearby store — not a warehouse — so what you see is what's actually in stock near you.`,
-    "bottom-wear": `Jeans, joggers, trousers and shorts from local stores across ${city} — delivered in 30-90 minutes, no need to visit multiple shops.`,
-    "foot-wear": `Sneakers, shoes and sandals from trusted local stores in ${city}, delivered fast — track your rider in real time from store to door.`,
+    "top-wear": `Shop t-shirts, shirts, hoodies and jackets from local stores, delivered to your door in 30-90 minutes. Every item ships from a nearby store — not a warehouse — so what you see is what's actually in stock near you.`,
+    "bottom-wear": `Jeans, joggers, trousers and shorts from local stores — delivered in 30-90 minutes, no need to visit multiple shops.`,
+    "foot-wear": `Sneakers, shoes and sandals from trusted local stores, delivered fast — track your rider in real time from store to door.`,
   };
   const introText = introMap[slug] ?? "";
 
@@ -447,7 +446,7 @@ export default function CategoryClient({ slug }: { slug: string }) {
               <p className="text-text-mute text-sm mt-1">
                 {activeFilterCount > 0
                   ? "Try adjusting your filters."
-                  : `New ${label} drops are landing in ${city} soon. Check back shortly or explore other categories in the meantime.`}
+                  : `New ${label} drops are landing soon. Check back shortly or explore other categories in the meantime.`}
               </p>
             </div>
             {activeFilterCount > 0 ? (
