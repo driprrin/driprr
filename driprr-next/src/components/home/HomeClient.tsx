@@ -103,7 +103,6 @@ export default function HomeClient() {
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center">
             <DriprrLogo height={32} />
-            <span className="text-[#FFC94A] text-lg font-black ml-0.5 select-none leading-none">+</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm font-semibold text-text-dim">
             <Link href="/" className="text-text-primary hover:text-primary transition-colors border-b-2 border-primary pb-1">Home</Link>
