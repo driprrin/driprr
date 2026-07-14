@@ -47,6 +47,61 @@ function ProfileButton() {
   );
 }
 
+// 4-day countdown timer for DRIPRR10 coupon
+const SALE_END = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000); // 4 days from first load
+
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+
+  useEffect(() => {
+    // Use a fixed end date stored in localStorage so it persists
+    let endTime: number;
+    const stored = localStorage.getItem("driprr10_end");
+    if (stored) {
+      endTime = parseInt(stored);
+    } else {
+      endTime = Date.now() + 4 * 24 * 60 * 60 * 1000;
+      localStorage.setItem("driprr10_end", String(endTime));
+    }
+
+    function calc() {
+      const diff = Math.max(0, endTime - Date.now());
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      setTimeLeft({ days, hours, mins, secs });
+    }
+
+    calc();
+    const interval = setInterval(calc, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  return (
+    <div className="mt-6 flex items-center gap-2">
+      {[
+        { val: timeLeft.days, label: "DAYS" },
+        { val: timeLeft.hours, label: "HRS" },
+        { val: timeLeft.mins, label: "MINS" },
+        { val: timeLeft.secs, label: "SECS" },
+      ].map((item, i) => (
+        <div key={item.label} className="flex items-center gap-2">
+          {i > 0 && <span className="text-xl font-bold text-[#FF4D2E] mb-5">:</span>}
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-11 border border-[#FF4D2E]/30 rounded-xl flex items-center justify-center text-lg font-black text-[#FF4D2E] bg-black/40 backdrop-blur-sm transition-all">
+              {pad(item.val)}
+            </div>
+            <span className="text-[8px] font-bold text-neutral-500 uppercase tracking-widest mt-1">{item.label}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function HomeClient() {
   const { activeCategory, setActiveCategory } = useUIStore();
   const { addItem } = useCartStore();
@@ -213,64 +268,42 @@ export default function HomeClient() {
         </button>
       </div>
 
-      {/* Flash sale banner */}
+      {/* Flash sale banner - DRIPRR10 */}
       <div className="px-5 pt-5">
         <div className="relative bg-black rounded-3xl overflow-hidden min-h-[340px] md:min-h-[400px] flex items-center shadow-xl border border-neutral-900">
           {/* Background image */}
           <div className="absolute inset-0 z-0">
             <Image
               src={flashSaleBanner}
-              alt="Flash Sale Drop 04"
+              alt="DRIPRR10 - 10% Off"
               fill
               className="object-cover object-right md:object-center opacity-90"
               priority
             />
-            {/* Dark gradient overlay on the left for text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
           </div>
 
           {/* Left Content */}
           <div className="relative z-10 max-w-md px-8 md:px-12 py-8 flex flex-col justify-center text-left">
             <div>
-              <span className="inline-block px-3 py-1 bg-transparent border border-[#FF4D2E] text-[#FF4D2E] rounded-full text-[10px] font-extrabold tracking-wider uppercase">
-                LIMITED TIME
+              <span className="inline-block px-3 py-1 bg-transparent border border-[#FF4D2E] text-[#FF4D2E] rounded-full text-[10px] font-extrabold tracking-wider uppercase animate-pulse">
+                LIMITED TIME OFFER
               </span>
             </div>
             <h2 className="mt-4 font-display font-black text-white text-3xl md:text-4xl leading-tight">
-              FLASH SALE:
+              USE CODE
               <br />
-              DROP <span className="text-[#FF4D2E]">04</span>
+              <span className="text-[#FF4D2E] text-4xl md:text-5xl">DRIPRR10</span>
             </h2>
-            <p className="mt-2 text-sm text-neutral-400">Up to 40% off SS24 select items.</p>
+            <p className="mt-2 text-sm text-neutral-400">Get <span className="text-white font-bold">10% OFF</span> on your first order. Limited time only!</p>
             
-            {/* Countdown timer */}
-            <div className="mt-6 flex items-center gap-3">
-              <div className="flex flex-col items-center">
-                <div className="w-14 h-12 border border-[#FF4D2E]/30 rounded-xl flex items-center justify-center text-xl font-black text-[#FF4D2E] bg-black/40 backdrop-blur-sm">
-                  02
-                </div>
-                <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest mt-1">HRS</span>
-              </div>
-              <span className="text-xl font-bold text-[#FF4D2E] mb-5">:</span>
-              <div className="flex flex-col items-center">
-                <div className="w-14 h-12 border border-[#FF4D2E]/30 rounded-xl flex items-center justify-center text-xl font-black text-[#FF4D2E] bg-black/40 backdrop-blur-sm">
-                  45
-                </div>
-                <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest mt-1">MINS</span>
-              </div>
-              <span className="text-xl font-bold text-[#FF4D2E] mb-5">:</span>
-              <div className="flex flex-col items-center">
-                <div className="w-14 h-12 border border-[#FF4D2E]/30 rounded-xl flex items-center justify-center text-xl font-black text-[#FF4D2E] bg-black/40 backdrop-blur-sm">
-                  19
-                </div>
-                <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-widest mt-1">SECS</span>
-              </div>
-            </div>
+            {/* Real countdown timer */}
+            <CountdownTimer />
 
-            <button className="mt-6 self-start px-6 py-3 bg-white text-black font-bold text-xs uppercase rounded-xl flex items-center gap-2 hover:bg-neutral-100 active:scale-[0.98] transition-all shadow-lg">
-              <span>SHOP THE DROP</span>
+            <Link href="/stores" className="mt-6 self-start px-6 py-3 bg-white text-black font-bold text-xs uppercase rounded-xl flex items-center gap-2 hover:bg-neutral-100 active:scale-[0.98] transition-all shadow-lg">
+              <span>SHOP NOW</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </button>
+            </Link>
           </div>
 
           {/* Dots Indicator */}
