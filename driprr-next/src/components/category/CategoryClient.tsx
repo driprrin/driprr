@@ -217,8 +217,17 @@ function FilterDrawer({
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function CategoryClient({ slug }: { slug: string }) {
   const label = slugLabels[slug] ?? slug.replace(/-/g, " ");
+  const city = "Hubli-Dharwad";
   const { addItem } = useCartStore();
   const { toggleItem, isWishlisted } = useWishlistStore();
+
+  // SEO intro copy per category
+  const introMap: Record<string, string> = {
+    "top-wear": `Shop t-shirts, shirts, hoodies and jackets from local stores across ${city}, delivered to your door in 30-90 minutes. Every item ships from a nearby store — not a warehouse — so what you see is what's actually in stock near you.`,
+    "bottom-wear": `Jeans, joggers, trousers and shorts from local stores across ${city} — delivered in 30-90 minutes, no need to visit multiple shops.`,
+    "foot-wear": `Sneakers, shoes and sandals from trusted local stores in ${city}, delivered fast — track your rider in real time from store to door.`,
+  };
+  const introText = introMap[slug] ?? "";
 
   // Filter state
   const [drawerOpen, setDrawerOpen]         = useState(false);
@@ -342,6 +351,11 @@ export default function CategoryClient({ slug }: { slug: string }) {
           </div>
         </header>
 
+        {/* SEO intro text */}
+        {introText && (
+          <p className="px-4 pt-4 text-sm text-text-dim leading-relaxed">{introText}</p>
+        )}
+
         {/* Result count + filter button */}
         <div className="px-4 pt-4 pb-2 flex items-center justify-between">
           <p className="text-sm text-text-mute">
@@ -429,20 +443,26 @@ export default function CategoryClient({ slug }: { slug: string }) {
               <PackageOpen size={28} />
             </div>
             <div>
-              <h2 className="font-display font-bold text-lg">No products found</h2>
+              <h2 className="font-display font-bold text-lg">Coming Soon</h2>
               <p className="text-text-mute text-sm mt-1">
-                {categoryProducts.length === 0
-                  ? `No products in ${label} yet.`
-                  : "Try adjusting your filters."}
+                {activeFilterCount > 0
+                  ? "Try adjusting your filters."
+                  : `New ${label} drops are landing in ${city} soon. Check back shortly or explore other categories in the meantime.`}
               </p>
             </div>
-            {activeFilterCount > 0 && (
+            {activeFilterCount > 0 ? (
               <button
                 onClick={handleReset}
                 className="px-5 py-2.5 bg-primary text-on-primary font-bold rounded-2xl text-sm"
               >
                 Clear Filters
               </button>
+            ) : (
+              <div className="flex gap-2">
+                {slug !== "top-wear" && <Link href="/category/top-wear" className="px-4 py-2 bg-surface-1 border border-border-low rounded-xl text-xs font-bold">Top Wear</Link>}
+                {slug !== "bottom-wear" && <Link href="/category/bottom-wear" className="px-4 py-2 bg-surface-1 border border-border-low rounded-xl text-xs font-bold">Bottom Wear</Link>}
+                {slug !== "foot-wear" && <Link href="/category/foot-wear" className="px-4 py-2 bg-surface-1 border border-border-low rounded-xl text-xs font-bold">Foot Wear</Link>}
+              </div>
             )}
           </div>
         ) : (

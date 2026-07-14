@@ -47,13 +47,13 @@ export const metadata: Metadata = {
     siteName: 'Driprr',
     locale: 'en_IN',
     url: 'https://driprr.com',
-    title: 'Driprr | Fashion from Nearby Stores, Delivered Fast',
-    description: 'Shop clothing, footwear, accessories, and streetwear from nearby fashion stores with fast local delivery on Driprr.',
+    title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
+    description: 'Get clothing, footwear & streetwear delivered from nearby stores in Hubli-Dharwad in 30-90 minutes. 100% authentic, COD available.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Driprr | Fashion from Nearby Stores, Delivered Fast',
-    description: 'Shop clothing, footwear, accessories, and streetwear from nearby fashion stores with fast local delivery.',
+    title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
+    description: 'Get clothing, footwear & streetwear delivered from nearby stores in Hubli-Dharwad in 30-90 minutes. 100% authentic, COD available.',
   },
 };
 

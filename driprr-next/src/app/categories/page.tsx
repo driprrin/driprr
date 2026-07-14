@@ -57,6 +57,11 @@ export default function CategoriesPage() {
       </header>
 
       <main className="max-w-4xl mx-auto px-5 pt-10 relative z-10">
+        {/* SEO intro */}
+        <p className="text-sm text-text-dim leading-relaxed mb-8">
+          Driprr connects you with local fashion stores across Hubli-Dharwad. Choose a category below to see what&apos;s available for delivery near you right now.
+        </p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {categories.map((c) => (
             <Link

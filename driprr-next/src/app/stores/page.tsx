@@ -77,10 +77,14 @@ export default function StoresPage() {
       </header>
 
       <main className="max-w-6xl mx-auto px-5 pt-8 relative z-10">
+        {/* SEO intro — always rendered server-side */}
+        <p className="text-sm text-text-dim leading-relaxed mb-6">
+          Every store on Driprr is a real, verified fashion retailer in Hubli-Dharwad. Browse stores near you and get their in-stock products delivered in 30-90 minutes.
+        </p>
+
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[300px] gap-3">
             <Loader2 className="animate-spin text-primary" size={32} />
-            <p className="text-text-dim text-sm">Searching for local streetwear spots…</p>
           </div>
         ) : stores.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[300px] text-center max-w-sm mx-auto gap-4">
