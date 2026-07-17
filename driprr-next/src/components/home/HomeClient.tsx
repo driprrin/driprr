@@ -109,6 +109,9 @@ export default function HomeClient() {
   const catScrollRef = useRef<HTMLDivElement>(null);
   const { location, detect } = useLocation();
 
+  // Dynamic category images from DB
+  const [catImages, setCatImages] = useState<Record<string, string>>({});
+
   // Real data from backend
   const [stores,   setStores]   = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
@@ -116,6 +119,17 @@ export default function HomeClient() {
   const [loadingProducts, setLoadingProducts] = useState(true);
 
   useEffect(() => { detect(); }, [detect]);
+
+  // Fetch category images from DB
+  useEffect(() => {
+    supabase.from("CategoryImage").select("label, imageUrl").then(({ data }) => {
+      if (data) {
+        const map: Record<string, string> = {};
+        data.forEach((c: any) => { if (c.imageUrl) map[c.label] = c.imageUrl; });
+        setCatImages(map);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const apiBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
@@ -209,7 +223,7 @@ export default function HomeClient() {
           {categories.map((c) => (
             <Link
               key={c.label}
-              href={`/category/${c.slug}`}
+              href={c.slug === "stores" ? "/stores" : `/category/${c.slug}`}
               onClick={() => setActiveCategory(c.label)}
               className="flex flex-col group"
             >
@@ -217,13 +231,18 @@ export default function HomeClient() {
                 {c.label}
               </p>
               <div className="relative aspect-square rounded-xl overflow-hidden bg-surface-1 border border-border-low group-hover:border-primary/40 transition-all">
-                <Image
-                  src={c.img}
-                  alt={c.label}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
-                />
+                {catImages[c.label] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={catImages[c.label]} alt={c.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                ) : (
+                  <Image
+                    src={c.img}
+                    alt={c.label}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
+                  />
+                )}
               </div>
             </Link>
           ))}

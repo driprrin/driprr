@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { supabase } from "@/lib/supabase";
 import {
-  LayoutDashboard, FileText, Store, Users, BarChart3, LogOut, ShieldCheck, Bike, ShoppingBag, Package,
+  LayoutDashboard, FileText, Store, Users, BarChart3, LogOut, ShieldCheck, Bike, ShoppingBag, Package, Grid,
 } from "lucide-react";
 
 const NAV = [
@@ -14,6 +14,7 @@ const NAV = [
   { href: "/riders",       icon: Bike,           label: "Riders"       },
   { href: "/stores",       icon: Store,          label: "Stores"       },
   { href: "/products",     icon: Package,        label: "Products"     },
+  { href: "/categories",   icon: Grid,           label: "Categories"   },
   { href: "/orders",       icon: ShoppingBag,    label: "Orders"       },
   { href: "/users",        icon: Users,          label: "Users"        },
   { href: "/analytics",    icon: BarChart3,      label: "Analytics"    },
