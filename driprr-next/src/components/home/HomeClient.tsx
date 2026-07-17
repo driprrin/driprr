@@ -202,70 +202,31 @@ export default function HomeClient() {
         </div>
       </header>
 
-      {/* Categories */}
-      <div className="pt-6 relative">
-        {/* Left arrow */}
-        <button
-          onClick={() => scrollCats("left")}
-          aria-label="Scroll left"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-background/90 backdrop-blur-sm border border-border-low rounded-full shadow-md text-text-primary hover:text-primary transition-colors"
-        >
-          <ChevronLeft size={16} />
-        </button>
-
-        {/* Scrollable track */}
-        <div
-          ref={catScrollRef}
-          className="flex gap-3 px-12 overflow-x-auto no-scrollbar pb-1"
-        >
-          {categories.map((c) => {
-            const active = c.label === activeCategory;
-            return (
-              <Link
-                key={c.label}
-                href={`/category/${c.slug}`}
-                onClick={() => setActiveCategory(c.label)}
-                className="shrink-0 flex flex-col items-center gap-2.5 group"
-              >
-                {/* Square card — image fills it, rounded corners */}
-                <div
-                  className={`relative w-[88px] h-[88px] rounded-2xl overflow-hidden transition-all duration-200 shadow-sm
-                    ${active
-                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                      : "hover:ring-2 hover:ring-border-low hover:ring-offset-1 hover:ring-offset-background"
-                    }`}
-                >
-                  <Image
-                    src={c.img}
-                    alt={c.label}
-                    fill
-                    className="object-cover"
-                    sizes="88px"
-                  />
-                  {/* Subtle gradient at bottom for label readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                </div>
-                {/* Label */}
-                <span
-                  className={`text-xs font-semibold whitespace-nowrap transition-colors ${
-                    active ? "text-primary" : "text-text-dim group-hover:text-text-primary"
-                  }`}
-                >
-                  {c.label}
-                </span>
-              </Link>
-            );
-          })}
+      {/* Categories — Grid layout */}
+      <div className="px-5 pt-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+          {categories.map((c) => (
+            <Link
+              key={c.label}
+              href={`/category/${c.slug}`}
+              onClick={() => setActiveCategory(c.label)}
+              className="flex flex-col group"
+            >
+              <p className="text-[11px] font-bold text-primary uppercase tracking-wider mb-2 group-hover:text-text-primary transition-colors">
+                {c.label}
+              </p>
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-surface-1 border border-border-low group-hover:border-primary/40 transition-all">
+                <Image
+                  src={c.img}
+                  alt={c.label}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 16vw"
+                />
+              </div>
+            </Link>
+          ))}
         </div>
-
-        {/* Right arrow */}
-        <button
-          onClick={() => scrollCats("right")}
-          aria-label="Scroll right"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-background/90 backdrop-blur-sm border border-border-low rounded-full shadow-md text-text-primary hover:text-primary transition-colors"
-        >
-          <ChevronRight size={16} />
-        </button>
       </div>
 
       {/* Flash sale banner - DRIPRR10 */}
