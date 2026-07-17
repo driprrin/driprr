@@ -52,7 +52,7 @@ function ProductModal({
     name:          product?.name          ?? "",
     brand:         product?.brand         ?? "",
     category:      product?.category      ?? "Top Wear",
-    type:          "",
+    type:          (product as any)?.tags?.[0] ?? "",
     price:         product?.price         ?? 0,
     originalPrice: product?.originalPrice ?? 0,
     badge:         product?.badge         ?? "",
@@ -83,6 +83,10 @@ function ProductModal({
           const p = r.data;
           // Load images
           if (p.imageUrls?.length) setImages(p.imageUrls);
+          // Load type from tags
+          if (p.tags?.length) {
+            setForm((prev) => ({ ...prev, type: p.tags[0] }));
+          }
           // Load inventory
           if (p.inventory?.length) {
             const inv: SizeStock[] = p.inventory.map((i: any) => ({ size: i.size, stock: i.stock }));
