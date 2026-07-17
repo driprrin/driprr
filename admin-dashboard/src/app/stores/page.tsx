@@ -31,21 +31,32 @@ export default function StoresPage() {
   async function handleDelete(id: string) {
     setDeleting(true);
     try {
-      // Hard delete: remove all related data then the store itself
-      await supabaseAdmin.from("OrderItem").delete().in("orderId", 
-        (await supabaseAdmin.from("Order").select("id").eq("storeId", id)).data?.map((o: any) => o.id) ?? []
-      );
-      await supabaseAdmin.from("Order").delete().eq("storeId", id);
-      await supabaseAdmin.from("Inventory").delete().in("productId",
-        (await supabaseAdmin.from("Product").select("id").eq("storeId", id)).data?.map((p: any) => p.id) ?? []
-      );
-      await supabaseAdmin.from("Product").delete().eq("storeId", id);
+      // Get all order IDs for this store
+      const { data: orders } = await supabaseAdmin.from("Order").select("id").eq("storeId", id);
+      const orderIds = (orders ?? []).map((o: any) => o.id);
+      
+      // Get all product IDs for this store
+      const { data: products } = await supabaseAdmin.from("Product").select("id").eq("storeId", id);
+      const productIds = (products ?? []).map((p: any) => p.id);
+
+      // Delete in correct order (deepest FK first)
+      if (orderIds.length > 0) {
+        await supabaseAdmin.from("Payment").delete().in("orderId", orderIds);
+        await supabaseAdmin.from("OrderItem").delete().in("orderId", orderIds);
+        await supabaseAdmin.from("Order").delete().eq("storeId", id);
+      }
+      if (productIds.length > 0) {
+        await supabaseAdmin.from("WishlistItem").delete().in("productId", productIds);
+        await supabaseAdmin.from("Inventory").delete().in("productId", productIds);
+        await supabaseAdmin.from("Product").delete().eq("storeId", id);
+      }
       await supabaseAdmin.from("Review").delete().eq("storeId", id);
       await supabaseAdmin.from("Store").delete().eq("id", id);
+      
       setStores((prev) => prev.filter((s) => s.id !== id));
       setDeleteId(null);
     } catch (err) {
-      // If hard delete fails due to FK constraints, fall back to soft delete
+      // If hard delete still fails, soft delete
       await supabaseAdmin.from("Store").update({ status: "removed", isOpen: false }).eq("id", id);
       setStores((prev) => prev.map((s) => s.id === id ? { ...s, status: "removed" } : s));
       setDeleteId(null);
