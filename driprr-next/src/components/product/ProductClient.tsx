@@ -300,7 +300,7 @@ export default function ProductClient({ id }: { id: string }) {
                 <div className="space-y-2">
                   <p>🚀 Delivers in ~{product.store?.etaMin ?? 45} min from {product.store?.name ?? "store"}.</p>
                   <p>🆓 Free delivery on orders above ₹{(product.store?.freeDeliveryAbove ?? 999).toLocaleString("en-IN")}.</p>
-                  <p>🔄 Easy <strong className="text-text-primary">7-day returns</strong> — unworn, unwashed, original packaging.</p>
+                  <p>🔄 Easy <strong className="text-text-primary">6-hour returns</strong> — unworn, unwashed, original packaging.</p>
                 </div>
               </Accordion>
               {product.store && (
