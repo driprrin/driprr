@@ -108,7 +108,7 @@ export default function StoreClient({ slug }: { slug: string }) {
   const filteredProducts = (() => {
     let list = [...products];
     if (filterCat !== "All") {
-      list = list.filter((p: any) => p.category === filterCat);
+      list = list.filter((p: any) => (p.tags ?? []).includes(filterCat) || p.category === filterCat);
     }
     switch (sortBy) {
       case "price-asc": list.sort((a, b) => a.price - b.price); break;
@@ -168,19 +168,19 @@ export default function StoreClient({ slug }: { slug: string }) {
         {/* Filters */}
         {products.length > 0 && (
           <div className="px-4 pb-3 space-y-2">
-            {/* Category chips */}
+            {/* Type chips (from tags) */}
             <div className="flex gap-2 overflow-x-auto no-scrollbar">
-              {["All", ...Array.from(new Set(products.map((p: any) => p.category).filter(Boolean)))].map((cat) => (
+              {["All", ...Array.from(new Set(products.flatMap((p: any) => p.tags ?? []).filter(Boolean)))].map((tag) => (
                 <button
-                  key={cat}
-                  onClick={() => setFilterCat(cat)}
+                  key={tag}
+                  onClick={() => setFilterCat(tag)}
                   className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
-                    filterCat === cat
+                    filterCat === tag
                       ? "bg-primary text-on-primary border-primary"
                       : "bg-surface-1 border-border-low text-text-dim hover:border-text-mute"
                   }`}
                 >
-                  {cat}
+                  {tag}
                 </button>
               ))}
             </div>
