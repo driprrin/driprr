@@ -24,7 +24,7 @@ export function OrganizationJsonLd() {
     description: 'Hyperlocal fashion delivery app connecting local clothing stores with customers in India for 30-90 minute delivery.',
     areaServed: { '@type': 'City', name: 'Hubli-Dharwad', addressRegion: 'Karnataka', addressCountry: 'IN' },
     sameAs: [
-      'https://www.instagram.com/driprr.official/',
+      'https://www.instagram.com/driprr.co',
     ],
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
