@@ -9,6 +9,12 @@ import { formatCurrency } from "@/lib/utils";
 
 const CATEGORIES = ["Top Wear", "Bottom Wear", "Foot Wear"];
 
+const TYPES: Record<string, string[]> = {
+  "Top Wear":    ["Shirts", "T-Shirts", "Jackets", "Hoodies", "Sweatshirts"],
+  "Bottom Wear": ["Jeans", "Joggers", "Trousers", "Shorts", "Cargos"],
+  "Foot Wear":   ["Sneakers", "Shoes", "Sandals", "Boots"],
+};
+
 const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 const NUMERIC_SIZES  = ["28", "30", "32", "34", "36", "38", "40", "42"];
 
@@ -46,6 +52,7 @@ function ProductModal({
     name:          product?.name          ?? "",
     brand:         product?.brand         ?? "",
     category:      product?.category      ?? "Top Wear",
+    type:          "",
     price:         product?.price         ?? 0,
     originalPrice: product?.originalPrice ?? 0,
     badge:         product?.badge         ?? "",
@@ -188,8 +195,15 @@ function ProductModal({
             </div>
             <div>
               <label className="block text-[10px] font-bold text-text-mute uppercase tracking-wider mb-1">Category</label>
-              <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))} className={inputCls}>
+              <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value, type: "" }))} className={inputCls}>
                 {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-text-mute uppercase tracking-wider mb-1">Type</label>
+              <select value={form.type} onChange={(e) => setForm((p) => ({ ...p, type: e.target.value }))} className={inputCls}>
+                <option value="">Select type</option>
+                {(TYPES[form.category] ?? []).map((t) => <option key={t}>{t}</option>)}
               </select>
             </div>
             <div>
@@ -375,6 +389,7 @@ export default function ProductsPage() {
           name:          data.name,
           brand:         data.brand,
           category:      data.category,
+          tags:          (data as any).type ? [(data as any).type] : [],
           price:         data.price,
           originalPrice: data.originalPrice,
           badge:         data.badge || undefined,
@@ -398,6 +413,7 @@ export default function ProductsPage() {
           name:          data.name,
           brand:         data.brand,
           category:      data.category,
+          tags:          (data as any).type ? [(data as any).type] : [],
           price:         data.price,
           originalPrice: data.originalPrice,
           badge:         data.badge || undefined,
