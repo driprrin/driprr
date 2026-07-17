@@ -49,40 +49,49 @@ function ProfileButton() {
 }
 
 // 4-day countdown timer for DRIPRR10 coupon
-const SALE_END = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000); // 4 days from first load
-
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Use a fixed end date stored in localStorage so it persists
-    let endTime: number;
-    const stored = localStorage.getItem("driprr10_end");
-    if (stored) {
-      endTime = parseInt(stored);
-    } else {
-      endTime = Date.now() + 4 * 24 * 60 * 60 * 1000;
-      localStorage.setItem("driprr10_end", String(endTime));
-    }
+    // Fetch coupon expiry from DB
+    import("@/lib/supabase").then(({ supabase }) => {
+      supabase.from("Coupon").select("expiresAt").eq("code", "DRIPRR10").maybeSingle().then(({ data }) => {
+        let endTime: number;
+        if (data?.expiresAt) {
+          endTime = new Date(data.expiresAt).getTime();
+        } else {
+          // Fallback: 4 days from now
+          const stored = localStorage.getItem("driprr10_end");
+          if (stored) {
+            endTime = parseInt(stored);
+          } else {
+            endTime = Date.now() + 4 * 24 * 60 * 60 * 1000;
+            localStorage.setItem("driprr10_end", String(endTime));
+          }
+        }
 
-    function calc() {
-      const diff = Math.max(0, endTime - Date.now());
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-      setTimeLeft({ days, hours, mins, secs });
-    }
+        function calc() {
+          const diff = Math.max(0, endTime - Date.now());
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const mins = Math.floor((diff / (1000 * 60)) % 60);
+          const secs = Math.floor((diff / 1000) % 60);
+          setTimeLeft({ days, hours, mins, secs });
+        }
 
-    calc();
-    const interval = setInterval(calc, 1000);
-    return () => clearInterval(interval);
+        calc();
+        setLoaded(true);
+        const interval = setInterval(calc, 1000);
+        return () => clearInterval(interval);
+      });
+    });
   }, []);
 
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
-    <div className="mt-6 flex items-center gap-2">
+    <div className={`mt-6 flex items-center gap-2 transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}>
       {[
         { val: timeLeft.days, label: "DAYS" },
         { val: timeLeft.hours, label: "HRS" },
