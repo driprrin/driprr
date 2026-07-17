@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ChevronLeft, Heart, SlidersHorizontal, X, Check, PackageOpen } from "lucide-react";
 import BottomNav from "@/components/layout/BottomNav";
 import { useCartStore } from "@/store/cartStore";
@@ -217,6 +218,8 @@ function FilterDrawer({
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function CategoryClient({ slug }: { slug: string }) {
   const label = slugLabels[slug] ?? slug.replace(/-/g, " ");
+  const searchParams = useSearchParams();
+  const typeFilter = searchParams.get("type") ?? "";
   const { addItem } = useCartStore();
   const { toggleItem, isWishlisted } = useWishlistStore();
 
@@ -259,6 +262,11 @@ export default function CategoryClient({ slug }: { slug: string }) {
         query = query.eq("category", categoryName);
       }
 
+      // Filter by type (tag) if specified via URL param
+      if (typeFilter) {
+        query = query.contains("tags", [typeFilter]);
+      }
+
       const { data } = await query.order("createdAt", { ascending: false });
 
       if (data && data.length > 0) {
@@ -278,7 +286,7 @@ export default function CategoryClient({ slug }: { slug: string }) {
       }
     }
     fetchProducts();
-  }, [slug]);
+  }, [slug, typeFilter]);
 
   // Apply brand / price / rating filters
   const filtered = useMemo(() => {
@@ -346,7 +354,7 @@ export default function CategoryClient({ slug }: { slug: string }) {
             <p className="text-[11px] text-text-mute">
               Home &rsaquo; Categories &rsaquo; {label}
             </p>
-            <h1 className="font-display font-bold text-lg leading-tight">{label}</h1>
+            <h1 className="font-display font-bold text-lg leading-tight">{typeFilter || label}</h1>
           </div>
         </header>
 

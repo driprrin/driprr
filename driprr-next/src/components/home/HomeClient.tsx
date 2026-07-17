@@ -21,12 +21,12 @@ import BottomNav from "@/components/layout/BottomNav";
 import { supabase } from "@/lib/supabase";
 
 const categories = [
-  { label: "Shirts",      slug: "top-wear",    img: storeVogue },
-  { label: "T-Shirts",    slug: "top-wear",    img: boxyHoodie },
-  { label: "Jackets",     slug: "top-wear",    img: utilityVest },
-  { label: "Jeans",       slug: "bottom-wear", img: parachutePants },
-  { label: "Sneakers",    slug: "foot-wear",   img: aeroSneakers },
-  { label: "Stores",      slug: "stores",      img: storeDrip },
+  { label: "Shirts",      slug: "top-wear",    type: "Shirts",    img: storeVogue },
+  { label: "T-Shirts",    slug: "top-wear",    type: "T-Shirts",  img: boxyHoodie },
+  { label: "Jackets",     slug: "top-wear",    type: "Jackets",   img: utilityVest },
+  { label: "Jeans",       slug: "bottom-wear", type: "Jeans",     img: parachutePants },
+  { label: "Sneakers",    slug: "foot-wear",   type: "Sneakers",  img: aeroSneakers },
+  { label: "Stores",      slug: "stores",      type: "",          img: storeDrip },
 ];
 
 const storeImgFallbacks = [storeVogue, storeDrip];
@@ -232,7 +232,7 @@ export default function HomeClient() {
           {categories.map((c) => (
             <Link
               key={c.label}
-              href={c.slug === "stores" ? "/stores" : `/category/${c.slug}`}
+              href={c.slug === "stores" ? "/stores" : `/category/${c.slug}${c.type ? `?type=${encodeURIComponent(c.type)}` : ""}`}
               onClick={() => setActiveCategory(c.label)}
               className="flex flex-col group"
             >
