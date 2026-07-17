@@ -14,6 +14,7 @@ function SignupForm() {
   const fetchProfile = useAuthStore((s) => s.fetchProfile);
 
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -27,6 +28,7 @@ function SignupForm() {
     setError("");
 
     if (!name.trim()) { setError("Please enter your name."); return; }
+    if (!phone.trim() || phone.length < 10) { setError("Please enter a valid 10-digit mobile number."); return; }
     if (!email) { setError("Please enter your email."); return; }
     if (password.length < 6) { setError("Password must be at least 6 characters."); return; }
     if (password !== confirm) { setError("Passwords do not match."); return; }
@@ -37,7 +39,7 @@ function SignupForm() {
         email,
         password,
         options: {
-          data: { name, role: "CUSTOMER" },
+          data: { name, phone, role: "CUSTOMER" },
         },
       });
 
@@ -53,7 +55,7 @@ function SignupForm() {
       const su = data.session.user;
 
       setAuth(
-        { id: su.id, phone: "", name, role: "CUSTOMER" },
+        { id: su.id, phone, name, role: "CUSTOMER" },
         token
       );
 
@@ -62,7 +64,7 @@ function SignupForm() {
         await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api"}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: su.id, name, email, role: "CUSTOMER" }),
+          body: JSON.stringify({ id: su.id, name, email, phone, role: "CUSTOMER" }),
         });
       } catch { /* ignore — AuthGuard will create the row on first API call */ }
 
@@ -126,6 +128,24 @@ function SignupForm() {
                 required
                 autoFocus
                 className="w-full pl-12 pr-4 py-3.5 bg-surface-2 border border-border-low focus:border-primary/60 rounded-2xl text-text-primary placeholder-text-mute focus:outline-none transition-colors text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="block text-[11px] font-bold tracking-wider text-text-dim uppercase mb-2">
+              Mobile Number
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim text-sm font-semibold">+91</span>
+              <input
+                type="tel"
+                placeholder="10-digit number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                required
+                className="w-full pl-14 pr-4 py-3.5 bg-surface-2 border border-border-low focus:border-primary/60 rounded-2xl text-text-primary placeholder-text-mute focus:outline-none transition-colors text-sm"
               />
             </div>
           </div>
