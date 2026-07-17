@@ -426,8 +426,8 @@ export default function HomeClient() {
           {[
             {
               icon: Zap,
-              title: "30–60 Min Delivery",
-              desc: "Lightning fast delivery from nearby stores.",
+              title: "30-90 Min Delivery",
+              desc: "Order now, wear it today. Delivered from stores near you.",
             },
             {
               icon: ShieldCheck,
