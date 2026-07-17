@@ -16,6 +16,10 @@ export default function StoreClient({ slug }: { slug: string }) {
   const [loading,  setLoading]  = useState(true);
   const [notFound, setNotFound] = useState(false);
 
+  // Filters
+  const [sortBy, setSortBy]         = useState<"default" | "price-asc" | "price-desc" | "newest">("default");
+  const [filterCat, setFilterCat]   = useState("All");
+
   useEffect(() => {
     async function load() {
       setLoading(true);
@@ -100,6 +104,20 @@ export default function StoreClient({ slug }: { slug: string }) {
     );
   }
 
+  // Filter & sort products
+  const filteredProducts = (() => {
+    let list = [...products];
+    if (filterCat !== "All") {
+      list = list.filter((p: any) => p.category === filterCat);
+    }
+    switch (sortBy) {
+      case "price-asc": list.sort((a, b) => a.price - b.price); break;
+      case "price-desc": list.sort((a, b) => b.price - a.price); break;
+      case "newest": list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
+    }
+    return list;
+  })();
+
   return (
     <div className="min-h-screen bg-background text-text-primary pb-24">
       <div className="max-w-5xl mx-auto">
@@ -144,10 +162,61 @@ export default function StoreClient({ slug }: { slug: string }) {
         {/* Products */}
         <div className="px-4 pt-5 pb-2 flex items-center justify-between">
           <h2 className="font-display font-bold text-lg">Available Now</h2>
-          <span className="text-xs text-text-mute">{products.length} items</span>
+          <span className="text-xs text-text-mute">{filteredProducts.length} items</span>
         </div>
 
-        {products.length === 0 ? (
+        {/* Filters */}
+        {products.length > 0 && (
+          <div className="px-4 pb-3 space-y-2">
+            {/* Category chips */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+              {["All", ...Array.from(new Set(products.map((p: any) => p.category).filter(Boolean)))].map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilterCat(cat)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${
+                    filterCat === cat
+                      ? "bg-primary text-on-primary border-primary"
+                      : "bg-surface-1 border-border-low text-text-dim hover:border-text-mute"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            {/* Sort */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+              {([
+                { key: "default", label: "Relevance" },
+                { key: "price-asc", label: "Price: Low" },
+                { key: "price-desc", label: "Price: High" },
+                { key: "newest", label: "Newest" },
+              ] as const).map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => setSortBy(opt.key)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                    sortBy === opt.key
+                      ? "bg-primary text-on-primary border-primary"
+                      : "bg-surface-1 border-border-low text-text-dim hover:border-text-mute"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {filteredProducts.length === 0 && products.length > 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 gap-4 text-center px-6">
+            <div className="w-14 h-14 rounded-3xl bg-surface-1 border border-border-low flex items-center justify-center text-text-mute">
+              <PackageOpen size={24} />
+            </div>
+            <p className="text-text-mute text-sm">No products match your filter.</p>
+            <button onClick={() => { setFilterCat("All"); setSortBy("default"); }} className="px-4 py-2 bg-primary text-on-primary text-xs font-bold rounded-xl">Clear Filters</button>
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 gap-4 text-center px-6">
             <div className="w-14 h-14 rounded-3xl bg-surface-1 border border-border-low flex items-center justify-center text-text-mute">
               <PackageOpen size={24} />
@@ -156,7 +225,7 @@ export default function StoreClient({ slug }: { slug: string }) {
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-border-low">
-            {products.map((p: any) => {
+            {filteredProducts.map((p: any) => {
               const discount = p.originalPrice > p.price ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
               return (
                 <Link key={p.id} href={`/product/${p.id}`} className="bg-background flex flex-col group cursor-pointer">
