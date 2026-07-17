@@ -54,7 +54,9 @@ export default function AdminProductsPage() {
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this product? This cannot be undone.")) return;
     setDeleting(id);
-    // Delete inventory first, then product
+    // Delete all related data first, then product
+    await supabaseAdmin.from("WishlistItem").delete().eq("productId", id);
+    await supabaseAdmin.from("OrderItem").delete().eq("productId", id);
     await supabaseAdmin.from("Inventory").delete().eq("productId", id);
     await supabaseAdmin.from("Product").delete().eq("id", id);
     setProducts((prev) => prev.filter((p) => p.id !== id));
