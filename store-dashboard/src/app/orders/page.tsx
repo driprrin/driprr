@@ -94,12 +94,16 @@ function OrderPanel({ order, onClose, onStatusUpdate }: { order: Order; onClose:
             <p className="text-[11px] font-black text-text-mute uppercase tracking-wider mb-3">Items</p>
             <div className="space-y-2">
               {order.items.map((item, i) => (
-                <div key={i} className="flex items-center justify-between text-sm bg-surface-2 rounded-xl px-3 py-2.5">
-                  <div>
+                <div key={i} className="flex items-center gap-3 text-sm bg-surface-2 rounded-xl px-3 py-2.5">
+                  {item.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.imageUrl} alt={item.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
+                  )}
+                  <div className="flex-1 min-w-0">
                     <p className="font-semibold text-text-primary">{item.name}</p>
                     <p className="text-xs text-text-mute">Size: {item.size} · Qty: {item.qty}</p>
                   </div>
-                  <span className="font-bold text-text-primary">{formatCurrency(item.price * item.qty)}</span>
+                  <span className="font-bold text-text-primary shrink-0">{formatCurrency(item.price * item.qty)}</span>
                 </div>
               ))}
             </div>
