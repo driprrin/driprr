@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useDashboardStore, Order, OrderStatus } from "@/store/dashboardStore";
 import { useAuthStore } from "@/store/authStore";
@@ -134,6 +134,24 @@ export default function DashboardPage() {
   }, [isAuthenticated, token, addOrder, updateOrderStatus]);
 
   const activeOrders = orders.filter((o) => o.status !== "Delivered" && o.status !== "Cancelled");
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayOrders = orders.filter((o) => o.placedAt?.startsWith(todayStr));
+
+  // Revenue chart data — last 7 days
+  const chartData = useMemo(() => {
+    const days: { day: string; revenue: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const dayLabel = d.toLocaleDateString("en-IN", { weekday: "short" });
+      const dayRevenue = orders
+        .filter((o) => o.placedAt?.startsWith(dateStr) && o.status !== "Cancelled")
+        .reduce((s, o) => s + o.total, 0);
+      days.push({ day: dayLabel, revenue: dayRevenue });
+    }
+    return days;
+  }, [orders]);
 
   return (
     <DashboardLayout title="Dashboard">
@@ -161,9 +179,9 @@ export default function DashboardPage() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <MetricCard label="Today's Revenue"  value={formatCurrency(0)}  change={0}  icon={TrendingUp}   iconColor="text-success"  />
-        <MetricCard label="Orders Today"     value="0"                  change={0}  icon={Receipt}      iconColor="text-primary"  />
-        <MetricCard label="Avg Order Value"  value={formatCurrency(0)}              icon={ShoppingBag}  iconColor="text-info"     />
+        <MetricCard label="Today's Revenue"  value={formatCurrency(todayOrders.reduce((s, o) => s + o.total, 0))}  change={0}  icon={TrendingUp}   iconColor="text-success"  />
+        <MetricCard label="Orders Today"     value={String(todayOrders.length)}  change={0}  icon={Receipt}      iconColor="text-primary"  />
+        <MetricCard label="Avg Order Value"  value={formatCurrency(orders.length > 0 ? Math.round(orders.reduce((s, o) => s + o.total, 0) / orders.length) : 0)}  icon={ShoppingBag}  iconColor="text-info"     />
         <MetricCard label="Pending Orders"   value={String(activeOrders.length)}    icon={Clock}        iconColor="text-warning"  />
       </div>
 
@@ -258,7 +276,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={[]} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+            <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border-low)" />
               <XAxis dataKey="day" tick={{ fontSize: 11, fill: "var(--text-mute)" }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: "var(--text-mute)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v/1000).toFixed(0)}k`} />
