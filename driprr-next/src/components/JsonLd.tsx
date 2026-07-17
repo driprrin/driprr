@@ -20,8 +20,12 @@ export function OrganizationJsonLd() {
     '@type': 'Organization',
     name: 'Driprr',
     url: 'https://driprr.com',
-    description: 'Hyperlocal fashion delivery platform',
+    logo: 'https://driprr.com/logo.png',
+    description: 'Hyperlocal fashion delivery app connecting local clothing stores with customers in India for 30-90 minute delivery.',
     areaServed: { '@type': 'City', name: 'Hubli-Dharwad', addressRegion: 'Karnataka', addressCountry: 'IN' },
+    sameAs: [
+      'https://www.instagram.com/driprr.official/',
+    ],
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
