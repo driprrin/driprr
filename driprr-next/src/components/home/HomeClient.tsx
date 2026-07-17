@@ -90,9 +90,9 @@ function CountdownTimer() {
         { val: timeLeft.secs, label: "SECS" },
       ].map((item, i) => (
         <div key={item.label} className="flex items-center gap-2">
-          {i > 0 && <span className="text-xl font-bold text-[#FF4D2E] mb-5">:</span>}
+          {i > 0 && <span className="text-xl font-bold text-neutral-400 mb-5">:</span>}
           <div className="flex flex-col items-center">
-            <div className="w-12 h-11 border border-[#FF4D2E]/30 rounded-xl flex items-center justify-center text-lg font-black text-[#FF4D2E] bg-black/40 backdrop-blur-sm transition-all">
+            <div className="w-12 h-11 border border-neutral-300 rounded-xl flex items-center justify-center text-lg font-black text-neutral-900 bg-white/80 backdrop-blur-sm transition-all shadow-sm">
               {pad(item.val)}
             </div>
             <span className="text-[8px] font-bold text-neutral-500 uppercase tracking-widest mt-1">{item.label}</span>
@@ -251,37 +251,37 @@ export default function HomeClient() {
 
       {/* Flash sale banner - DRIPRR10 */}
       <div className="px-5 pt-5">
-        <div className="relative bg-black rounded-3xl overflow-hidden min-h-[340px] md:min-h-[400px] flex items-center shadow-xl border border-neutral-900">
+        <div className="relative bg-white rounded-3xl overflow-hidden min-h-[340px] md:min-h-[400px] flex items-center shadow-lg border border-neutral-200">
           {/* Background image */}
           <div className="absolute inset-0 z-0">
             <Image
               src={flashSaleBanner}
               alt="DRIPRR10 - 10% Off"
               fill
-              className="object-cover object-right md:object-center opacity-90"
+              className="object-cover object-right md:object-center opacity-80"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
           </div>
 
           {/* Left Content */}
           <div className="relative z-10 max-w-md px-8 md:px-12 py-8 flex flex-col justify-center text-left">
             <div>
-              <span className="inline-block px-3 py-1 bg-transparent border border-[#FF4D2E] text-[#FF4D2E] rounded-full text-[10px] font-extrabold tracking-wider uppercase animate-pulse">
+              <span className="inline-block px-3 py-1.5 bg-[#FF4D2E]/10 border border-[#FF4D2E] text-[#FF4D2E] rounded-full text-[10px] font-extrabold tracking-wider uppercase animate-pulse">
                 LIMITED TIME OFFER
               </span>
             </div>
-            <h2 className="mt-4 font-display font-black text-white text-3xl md:text-4xl leading-tight">
+            <h2 className="mt-4 font-display font-black text-neutral-900 text-3xl md:text-4xl leading-tight">
               USE CODE
               <br />
               <span className="text-[#FF4D2E] text-4xl md:text-5xl">DRIPRR10</span>
             </h2>
-            <p className="mt-2 text-sm text-neutral-400">Get <span className="text-white font-bold">10% OFF</span> on your first order. Limited time only!</p>
+            <p className="mt-2 text-sm text-neutral-500">Get <span className="text-neutral-900 font-bold">10% OFF</span> on your first order. Limited time only!</p>
             
             {/* Real countdown timer */}
             <CountdownTimer />
 
-            <Link href="/stores" className="mt-6 self-start px-6 py-3 bg-white text-black font-bold text-xs uppercase rounded-xl flex items-center gap-2 hover:bg-neutral-100 active:scale-[0.98] transition-all shadow-lg">
+            <Link href="/stores" className="mt-6 self-start px-6 py-3 bg-[#FF4D2E] text-white font-bold text-xs uppercase rounded-full flex items-center gap-2 hover:bg-[#e5432a] active:scale-[0.98] transition-all shadow-lg">
               <span>SHOP NOW</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
@@ -290,8 +290,8 @@ export default function HomeClient() {
           {/* Dots Indicator */}
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
             <span className="h-1.5 w-6 rounded-full bg-[#FF4D2E] transition-all" />
-            <span className="h-1.5 w-1.5 rounded-full bg-neutral-600" />
-            <span className="h-1.5 w-1.5 rounded-full bg-neutral-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-neutral-300" />
+            <span className="h-1.5 w-1.5 rounded-full bg-neutral-300" />
           </div>
         </div>
       </div>
