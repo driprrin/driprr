@@ -340,14 +340,10 @@ export default function CheckoutPage() {
       }
 
       // ── Razorpay flow ──
-      // Step 1: Create the order in our backend first
-      const orderRes = await api.post("/orders", payload);
-      const orderId = orderRes.data.id;
-
-      // Step 2: Create a Razorpay order via our backend
+      // Step 1: Create a Razorpay order first (no DB order yet)
       const rzpRes = await api.post("/payments/create-order", {
         amount: total,
-        receipt: orderId,
+        receipt: `temp_${Date.now()}`,
       });
       const { razorpayOrderId, keyId } = rzpRes.data;
 
@@ -370,7 +366,7 @@ export default function CheckoutPage() {
         amount: Math.round(total * 100), // paise
         currency: "INR",
         name: "DRIPRR",
-        description: `Order #${orderId.slice(0, 8)}`,
+        description: `Order on Driprr`,
         order_id: razorpayOrderId,
         prefill: {
           name: name.trim(),
@@ -381,27 +377,33 @@ export default function CheckoutPage() {
           color: "#6C5CE7",
         },
         handler: async function (response: any) {
-          // Payment succeeded on Razorpay — redirect to success immediately
-          clearCart();
-          
-          // Verify in background (non-blocking) — order is already created
+          // Payment succeeded — NOW create the order in our backend
           try {
-            await api.post("/payments/verify", {
-              orderId,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-            });
-          } catch {
-            // Verification failed but payment went through — still redirect
-            console.warn("Payment verification API failed, but payment was successful on Razorpay");
+            const orderRes = await api.post("/orders", payload);
+            const orderId = orderRes.data.id;
+            
+            // Verify payment (non-blocking)
+            try {
+              await api.post("/payments/verify", {
+                orderId,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+              });
+            } catch {
+              console.warn("Payment verification failed, but payment was successful");
+            }
+            
+            clearCart();
+            router.push(`/order-confirmation?id=${orderId}&total=${total}&slot=${encodeURIComponent(slotInfo)}`);
+          } catch (err: any) {
+            setError("Payment successful but order creation failed. Please contact support with your payment ID: " + response.razorpay_payment_id);
+            setLoading(false);
           }
-          
-          router.push(`/order-confirmation?id=${orderId}&total=${total}&slot=${encodeURIComponent(slotInfo)}`);
         },
         modal: {
           ondismiss: function () {
-            setError("Payment was cancelled. Your order is saved — you can retry.");
+            setError("Payment was cancelled. Please try again.");
             setLoading(false);
           },
         },
