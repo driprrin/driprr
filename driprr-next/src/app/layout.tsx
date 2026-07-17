@@ -28,11 +28,12 @@ const nunito = Nunito({
 export const metadata: Metadata = {
   metadataBase: new URL('https://driprr.com'),
   title: {
-    default: 'Driprr | Fashion from Nearby Stores, Delivered Fast',
+    default: 'Driprr: Fashion Delivery in 30-90 Min',
     template: '%s | Driprr',
   },
   description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   applicationName: 'Driprr',
+  keywords: ['driprr', 'driprr app', 'driprr fashion', 'fashion delivery', 'clothing delivery', 'nearby stores', 'streetwear delivery', 'fast fashion delivery'],
   authors: [{ name: 'Driprr' }],
   creator: 'Driprr',
   publisher: 'Driprr',
@@ -46,12 +47,12 @@ export const metadata: Metadata = {
     siteName: 'Driprr',
     locale: 'en_IN',
     url: 'https://driprr.com',
-    title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
+    title: 'Driprr: Fashion Delivery in 30-90 Min',
     description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
+    title: 'Driprr: Fashion Delivery in 30-90 Min',
     description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   },
 };

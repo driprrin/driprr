@@ -5,8 +5,8 @@ import { FAQSchema } from '@/components/JsonLd';
 const city = "Hubli-Dharwad";
 
 export const metadata: Metadata = {
-  title: `Fashion Delivery in ${city} in 30-90 Min | Driprr`,
-  description: `Get clothing, footwear & streetwear delivered from nearby stores in ${city} in 30-90 minutes. 100% authentic, COD available. Order on Driprr now.`,
+  title: 'Driprr: Fashion Delivery in 30-90 Min',
+  description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   alternates: { canonical: 'https://driprr.com' },
 };
 
