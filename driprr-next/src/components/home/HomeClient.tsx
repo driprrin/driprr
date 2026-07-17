@@ -21,11 +21,12 @@ import BottomNav from "@/components/layout/BottomNav";
 import { supabase } from "@/lib/supabase";
 
 const categories = [
-  { label: "Top Wear",    slug: "top-wear",    img: boxyHoodie },
-  { label: "Bottom Wear", slug: "bottom-wear", img: parachutePants },
-  { label: "Foot Wear",   slug: "foot-wear",   img: aeroSneakers },
-  { label: "Stores",      slug: "stores",      img: storeVogue },
-  { label: "New Drops",   slug: "new-drops",   img: storeDrip },
+  { label: "Shirts",      slug: "top-wear",    img: storeVogue },
+  { label: "T-Shirts",    slug: "top-wear",    img: boxyHoodie },
+  { label: "Jackets",     slug: "top-wear",    img: utilityVest },
+  { label: "Jeans",       slug: "bottom-wear", img: parachutePants },
+  { label: "Sneakers",    slug: "foot-wear",   img: aeroSneakers },
+  { label: "Stores",      slug: "stores",      img: storeDrip },
 ];
 
 const storeImgFallbacks = [storeVogue, storeDrip];
