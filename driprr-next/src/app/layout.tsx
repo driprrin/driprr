@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     default: 'Driprr | Fashion from Nearby Stores, Delivered Fast',
     template: '%s | Driprr',
   },
-  description: 'Discover fashion from nearby stores on Driprr. Shop clothing, footwear, accessories, and streetwear with fast local delivery in Hubli-Dharwad.',
+  description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   applicationName: 'Driprr',
   authors: [{ name: 'Driprr' }],
   creator: 'Driprr',
@@ -47,12 +47,12 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://driprr.com',
     title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
-    description: 'Get clothing, footwear & streetwear delivered from nearby stores in Hubli-Dharwad in 30-90 minutes. 100% authentic, COD available.',
+    description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Fashion Delivery in Hubli-Dharwad in 30-90 Min | Driprr',
-    description: 'Get clothing, footwear & streetwear delivered from nearby stores in Hubli-Dharwad in 30-90 minutes. 100% authentic, COD available.',
+    description: 'Driprr is your neighbourhood fashion delivery app, delivering clothing, footwear, streetwear & more from nearby stores to your doorstep in just 30-90 minutes.',
   },
 };
 
