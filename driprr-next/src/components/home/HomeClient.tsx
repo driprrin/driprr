@@ -127,7 +127,11 @@ export default function HomeClient() {
   const [loadingStores,   setLoadingStores]   = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
 
-  useEffect(() => { detect(); }, [detect]);
+  useEffect(() => {
+    // Only auto-detect if no location is saved yet
+    const saved = localStorage.getItem("driprr-location");
+    if (!saved) detect();
+  }, [detect]);
 
   // Fetch category images from DB
   useEffect(() => {
