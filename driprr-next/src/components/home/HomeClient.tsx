@@ -190,35 +190,29 @@ export default function HomeClient() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <button
-            onClick={detect}
-            disabled={location.status === "loading"}
-            title={location.status === "error" ? location.message : "Detect my location"}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-surface-1 border border-border-low rounded-full text-xs font-medium transition-all hover:border-primary/50 disabled:opacity-70 max-w-[200px]"
+          <Link
+            href="/location"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-surface-1 border border-border-low rounded-full text-xs font-medium transition-all hover:border-primary/50 max-w-[200px]"
           >
             {location.status === "loading" ? (
               <>
                 <Loader2 size={14} className="text-primary animate-spin shrink-0" />
                 <span className="text-text-dim">Detecting…</span>
               </>
-            ) : location.status === "error" ? (
-              <>
-                <MapPin size={14} className="text-red-400 shrink-0" />
-                <span className="text-red-400 truncate">Retry location</span>
-              </>
             ) : location.status === "success" ? (
               <>
                 <MapPin size={14} className="text-primary shrink-0" />
                 <span className="truncate">{location.display}</span>
+                <span className="material-symbols-outlined text-[14px] text-text-dim ml-0.5">expand_more</span>
               </>
             ) : (
               <>
                 <MapPin size={14} className="text-primary shrink-0" />
-                <span className="text-text-dim">Hubli, Karnataka</span>
+                <span className="text-text-dim">Select Location</span>
                 <span className="material-symbols-outlined text-[14px] text-text-dim ml-0.5">expand_more</span>
               </>
-            )}
-          </button>
+            )}}
+          </Link>
           
           <ThemeToggle />
 
