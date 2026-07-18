@@ -87,3 +87,6 @@ html.dark {
 }
 .animate-slide-up { animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .animate-fade-in  { animation: fadeIn  0.25s ease forwards; }
+
+/* Leaflet map styles */
+@import "leaflet/dist/leaflet.css";

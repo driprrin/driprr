@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Store, Clock, MapPin, Bell, AlertTriangle, Check, Camera, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
+
+const DeliveryMap = dynamic(() => import("@/components/DeliveryMap"), { ssr: false });
 
 const CLOUDINARY_CLOUD  = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME  ?? "hunu2oxf";
 const CLOUDINARY_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "d1qib0aj";
@@ -33,6 +36,8 @@ export default function SettingsPage() {
   const [saved, setSaved]           = useState(false);
   const [hours, setHours]           = useState(defaultHours);
   const [radius, setRadius]         = useState(5);
+  const [storeLat, setStoreLat]     = useState(15.3647);  // Hubli default
+  const [storeLng, setStoreLng]     = useState(75.1240);
   const [deliveryFee, setDeliveryFee] = useState(49);
   const [freeAbove, setFreeAbove]   = useState(999);
   const [deleteConfirm, setDeleteConfirm] = useState("");
@@ -99,7 +104,7 @@ export default function SettingsPage() {
     if (!user?.storeId) return;
     import("@/lib/supabase").then(({ supabase }) => {
       supabase.from("Store")
-        .select("name, tagline, address, pincode, deliveryFee, freeDeliveryAbove, deliveryRadiusKm, coverUrl")
+        .select("name, tagline, address, pincode, deliveryFee, freeDeliveryAbove, deliveryRadiusKm, coverUrl, lat, lng")
         .eq("id", user.storeId)
         .maybeSingle()
         .then(({ data }) => {
@@ -112,6 +117,8 @@ export default function SettingsPage() {
             setDeliveryFee(data.deliveryFee ?? 49);
             setFreeAbove(data.freeDeliveryAbove ?? 999);
             setRadius(data.deliveryRadiusKm ?? 5);
+            if (data.lat) setStoreLat(data.lat);
+            if (data.lng) setStoreLng(data.lng);
           }
         });
     });
@@ -255,12 +262,8 @@ export default function SettingsPage() {
               <div className="flex justify-between text-[10px] text-text-mute mt-1"><span>1 km</span><span>100 km</span></div>
             </div>
 
-            {/* Map placeholder */}
-            <div className="w-full h-40 bg-surface-2 border-2 border-dashed border-border-low rounded-2xl flex flex-col items-center justify-center gap-2 text-text-mute">
-              <MapPin size={24} />
-              <p className="text-xs font-semibold">Map integration coming soon</p>
-              <p className="text-[10px]">Delivery covers ~{(Math.PI * radius * radius).toFixed(0)} sq km</p>
-            </div>
+            {/* Delivery zone map */}
+            <DeliveryMap lat={storeLat} lng={storeLng} radiusKm={radius} />
 
             {/* Fees */}
             <div className="grid grid-cols-2 gap-3">
