@@ -109,7 +109,6 @@ export default function StoresPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {stores.map((s, idx) => {
-              const image = storeImages[idx % storeImages.length];
               return (
                 <Link
                   key={s.id}
@@ -117,13 +116,22 @@ export default function StoresPage() {
                   className="bg-surface-1 border border-border-low rounded-3xl overflow-hidden cursor-pointer group hover:scale-[1.02] transition-all duration-250 shadow-sm flex flex-col h-full"
                 >
                   <div className="relative h-44 w-full">
-                    <Image
-                      src={image}
-                      alt={s.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
+                    {s.coverUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={s.coverUrl}
+                        alt={s.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <Image
+                        src={storeImages[idx % storeImages.length]}
+                        alt={s.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    )}
                     <div className="absolute top-3 left-3">
                       <span className="px-2 py-0.5 bg-black/60 backdrop-blur-sm text-white text-[9px] font-black uppercase rounded-md tracking-wider">
                         {s.status}
