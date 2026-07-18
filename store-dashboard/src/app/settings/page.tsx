@@ -88,6 +88,8 @@ export default function SettingsPage() {
           deliveryFee,
           freeDeliveryAbove: freeAbove,
           deliveryRadiusKm: radius,
+          lat: storeLat,
+          lng: storeLng,
         }).eq("id", user.storeId).then(() => {
           setSaved(true);
           setTimeout(() => setSaved(false), 2500);
@@ -263,7 +265,8 @@ export default function SettingsPage() {
             </div>
 
             {/* Delivery zone map */}
-            <DeliveryMap lat={storeLat} lng={storeLng} radiusKm={radius} />
+            <DeliveryMap lat={storeLat} lng={storeLng} radiusKm={radius} onLocationChange={(lat, lng) => { setStoreLat(lat); setStoreLng(lng); }} />
+            <p className="text-[10px] text-text-mute mt-1">Click on the map to set your store location. Delivery area: ~{(Math.PI * radius * radius).toFixed(0)} sq km</p>
 
             {/* Fees */}
             <div className="grid grid-cols-2 gap-3">
