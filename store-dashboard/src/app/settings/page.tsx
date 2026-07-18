@@ -250,9 +250,9 @@ export default function SettingsPage() {
                 <label className="text-[10px] font-bold text-text-mute uppercase tracking-wider">Delivery Radius</label>
                 <span className="text-sm font-black text-primary">{radius} km</span>
               </div>
-              <input type="range" min={1} max={20} value={radius} onChange={(e) => setRadius(+e.target.value)}
+              <input type="range" min={1} max={100} value={radius} onChange={(e) => setRadius(+e.target.value)}
                 className="w-full accent-primary" />
-              <div className="flex justify-between text-[10px] text-text-mute mt-1"><span>1 km</span><span>20 km</span></div>
+              <div className="flex justify-between text-[10px] text-text-mute mt-1"><span>1 km</span><span>100 km</span></div>
             </div>
 
             {/* Map placeholder */}
