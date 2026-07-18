@@ -211,7 +211,7 @@ export default function HomeClient() {
                 <span className="text-text-dim">Select Location</span>
                 <span className="material-symbols-outlined text-[14px] text-text-dim ml-0.5">expand_more</span>
               </>
-            )}}
+            )}
           </Link>
           
           <ThemeToggle />
