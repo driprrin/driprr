@@ -261,28 +261,78 @@ export default function ApplicationsPage() {
   async function handleApprove(app: StoreApplication) {
     setApproving(true);
     try {
-      // Call backend — creates Supabase user + Store row + marks APPROVED
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api"}/applications/stores/${app.id}/approve`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Admin token from Supabase session
-          "Authorization": `Bearer ${(await import("@/lib/supabase").then(m => m.supabase.auth.getSession()))?.data?.session?.access_token ?? ""}`,
-        },
+      // Do everything directly via Supabase Admin — no backend needed
+
+      // 1. Use applicant's password or generate one
+      const tempPassword = app.password && app.password.length >= 6
+        ? app.password
+        : Math.random().toString(36).slice(-8) + "A1!";
+
+      // 2. Create Supabase auth user
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email: app.email,
+        password: tempPassword,
+        email_confirm: true,
+        user_metadata: { name: app.ownerName, role: "STORE_OWNER", storeName: app.storeName },
       });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message ?? "Approval failed");
+      let userId = authData?.user?.id;
+
+      if (authError) {
+        if (authError.message.toLowerCase().includes("already")) {
+          // User exists — find them
+          const { data: listData } = await supabaseAdmin.auth.admin.listUsers();
+          const existing = listData?.users?.find((u) => u.email === app.email);
+          if (!existing) throw new Error("User exists but not found");
+          userId = existing.id;
+          await supabaseAdmin.auth.admin.updateUserById(userId, {
+            email_confirm: true,
+            user_metadata: { name: app.ownerName, role: "STORE_OWNER", storeName: app.storeName },
+          });
+        } else {
+          throw new Error(`Auth error: ${authError.message}`);
+        }
       }
 
-      const result = await res.json();
+      if (!userId) throw new Error("Could not get user ID");
+
+      // 3. Upsert User row in DB
+      const { error: userErr } = await supabaseAdmin.from("User").upsert({
+        id: userId,
+        email: app.email,
+        name: app.ownerName,
+        phone: app.phone || null,
+        role: "STORE_OWNER",
+      });
+      if (userErr) console.warn("User upsert warning:", userErr);
+
+      // 4. Create Store row
+      const slug = `${app.storeName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+      const { data: storeData, error: storeErr } = await supabaseAdmin.from("Store").insert({
+        ownerId: userId,
+        name: app.storeName,
+        slug,
+        address: app.storeAddress,
+        city: app.city,
+        pincode: app.pincode,
+        location: `${app.storeAddress}, ${app.city}`,
+        categories: app.categories,
+        isOpen: false,
+        status: "active",
+      }).select("id").single();
+      if (storeErr) throw new Error(`Store creation failed: ${storeErr.message}`);
+
+      // 5. Mark application APPROVED
+      await supabaseAdmin.from("StoreApplication").update({
+        status: "APPROVED",
+        reviewedAt: new Date().toISOString(),
+        createdUserId: userId,
+        createdStoreId: storeData?.id,
+      }).eq("id", app.id);
+
       setApps((prev) => prev.map((a) => a.id === app.id ? { ...a, status: "APPROVED" } : a));
       setSelected(null);
-
-      // Show credentials to admin so they can share manually
-      const creds = result.credentials;
-      showToast(`✅ ${app.storeName} approved! Credentials — ${creds.email} / ${creds.password}`, "success");
+      showToast(`✅ ${app.storeName} approved! Login: ${app.email} / ${tempPassword}`, "success");
     } catch (err) {
       showToast(err instanceof Error ? err.message : "Approval failed", "error");
     } finally {
