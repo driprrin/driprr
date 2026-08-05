@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate {
           phone,
           email,
           name,
-          role,
+          role: role as any,
           avatar: supabaseUser.user_metadata?.avatar_url || null,
         },
       });

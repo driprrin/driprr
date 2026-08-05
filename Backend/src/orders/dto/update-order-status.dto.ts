@@ -1,9 +1,11 @@
-import { IsEnum } from 'class-validator';
-import { OrderStatus } from '@prisma/client';
+import { IsString, IsIn } from 'class-validator';
+
+const ORDER_STATUSES = ['PLACED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
 
 export class UpdateOrderStatusDto {
-  @IsEnum(OrderStatus, {
-    message: `status must be one of: ${Object.values(OrderStatus).join(', ')}`,
+  @IsString()
+  @IsIn(ORDER_STATUSES, {
+    message: `status must be one of: ${ORDER_STATUSES.join(', ')}`,
   })
-  status: OrderStatus;
+  status: string;
 }

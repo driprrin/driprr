@@ -88,9 +88,9 @@ export class ApplicationsService {
         email: app.email,
         name:  app.ownerName,
         phone: app.phone || null,
-        role:  'STORE_OWNER',
+        role:  'STORE_OWNER' as any,
       },
-      update: { role: 'STORE_OWNER' },
+      update: { role: 'STORE_OWNER' as any },
     });
 
     // 3. Create Store row
@@ -188,8 +188,8 @@ export class ApplicationsService {
     // 2. Create User row
     await this.prisma.user.upsert({
       where: { id: userId },
-      create: { id: userId, email: rider.email, name: rider.fullName, phone: rider.phone || null, role: 'RIDER' },
-      update: { role: 'RIDER' },
+      create: { id: userId, email: rider.email, name: rider.fullName, phone: rider.phone || null, role: 'RIDER' as any },
+      update: { role: 'RIDER' as any },
     });
 
     // 3. Create Rider row
