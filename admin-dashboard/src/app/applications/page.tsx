@@ -308,7 +308,9 @@ export default function ApplicationsPage() {
 
       // 4. Create Store row
       const slug = `${app.storeName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+      const storeId = crypto.randomUUID();
       const { data: storeData, error: storeErr } = await supabaseAdmin.from("Store").insert({
+        id: storeId,
         ownerId: userId,
         name: app.storeName,
         slug,
