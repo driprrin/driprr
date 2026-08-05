@@ -297,11 +297,17 @@ export default function ApplicationsPage() {
       if (!userId) throw new Error("Could not get user ID");
 
       // 3. Upsert User row in DB — must succeed before creating Store
+      // Check if phone is already taken by another user
+      let phoneToSave = app.phone || null;
+      if (phoneToSave) {
+        const { data: existingPhone } = await supabaseAdmin.from("User").select("id").eq("phone", phoneToSave).neq("id", userId).maybeSingle();
+        if (existingPhone) phoneToSave = null; // Phone taken by someone else — skip it
+      }
       const { error: userErr } = await supabaseAdmin.from("User").upsert({
         id: userId,
         email: app.email,
         name: app.ownerName,
-        phone: app.phone || null,
+        phone: phoneToSave,
         role: "STORE_OWNER",
         updatedAt: new Date().toISOString(),
       }, { onConflict: "id" });
