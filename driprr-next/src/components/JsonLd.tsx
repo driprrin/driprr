@@ -42,7 +42,7 @@ export function LocalBusinessJsonLd() {
     priceRange: '₹₹',
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
-}
+} 
 
 export function FAQSchema({ faqs }: { faqs: { q: string; a: string }[] }) {
   const schema = {

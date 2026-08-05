@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { SupabaseService } from './supabase.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -52,11 +51,11 @@ export class AuthGuard implements CanActivate {
       const name = supabaseUser.user_metadata?.name || 'User';
       const email = supabaseUser.email || null;
 
-      let role: UserRole = UserRole.CUSTOMER;
+      let role: string = 'CUSTOMER';
       const metadataRole = supabaseUser.user_metadata?.role;
-      if (metadataRole === 'STORE_OWNER') role = UserRole.STORE_OWNER;
-      if (metadataRole === 'RIDER') role = UserRole.RIDER;
-      if (metadataRole === 'ADMIN') role = UserRole.ADMIN;
+      if (metadataRole === 'STORE_OWNER') role = 'STORE_OWNER';
+      if (metadataRole === 'RIDER') role = 'RIDER';
+      if (metadataRole === 'ADMIN') role = 'ADMIN';
 
       dbUser = await this.prisma.user.create({
         data: {

@@ -3,7 +3,6 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { SupabaseService } from '../auth/supabase.service';
-import { UserRole } from '@prisma/client';
 
 function generatePassword(): string {
   const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
@@ -89,9 +88,9 @@ export class ApplicationsService {
         email: app.email,
         name:  app.ownerName,
         phone: app.phone || null,
-        role:  UserRole.STORE_OWNER,
+        role:  'STORE_OWNER',
       },
-      update: { role: UserRole.STORE_OWNER },
+      update: { role: 'STORE_OWNER' },
     });
 
     // 3. Create Store row
@@ -189,8 +188,8 @@ export class ApplicationsService {
     // 2. Create User row
     await this.prisma.user.upsert({
       where: { id: userId },
-      create: { id: userId, email: rider.email, name: rider.fullName, phone: rider.phone || null, role: UserRole.RIDER },
-      update: { role: UserRole.RIDER },
+      create: { id: userId, email: rider.email, name: rider.fullName, phone: rider.phone || null, role: 'RIDER' },
+      update: { role: 'RIDER' },
     });
 
     // 3. Create Rider row
