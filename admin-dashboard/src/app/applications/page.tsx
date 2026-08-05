@@ -296,7 +296,7 @@ export default function ApplicationsPage() {
 
       if (!userId) throw new Error("Could not get user ID");
 
-      // 3. Upsert User row in DB
+      // 3. Upsert User row in DB — must succeed before creating Store
       const { error: userErr } = await supabaseAdmin.from("User").upsert({
         id: userId,
         email: app.email,
@@ -304,8 +304,8 @@ export default function ApplicationsPage() {
         phone: app.phone || null,
         role: "STORE_OWNER",
         updatedAt: new Date().toISOString(),
-      });
-      if (userErr) console.warn("User upsert warning:", userErr);
+      }, { onConflict: "id" });
+      if (userErr) throw new Error(`User creation failed: ${userErr.message}`);
 
       // 4. Create Store row
       const slug = `${app.storeName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
