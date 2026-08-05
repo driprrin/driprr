@@ -303,6 +303,7 @@ export default function ApplicationsPage() {
         name: app.ownerName,
         phone: app.phone || null,
         role: "STORE_OWNER",
+        updatedAt: new Date().toISOString(),
       });
       if (userErr) console.warn("User upsert warning:", userErr);
 
@@ -321,6 +322,7 @@ export default function ApplicationsPage() {
         categories: app.categories,
         isOpen: false,
         status: "active",
+        updatedAt: new Date().toISOString(),
       }).select("id").single();
       if (storeErr) throw new Error(`Store creation failed: ${storeErr.message}`);
 

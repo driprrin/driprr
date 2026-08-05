@@ -83,7 +83,7 @@ export function ProductJsonLd({ product }: { product: { name: string; brand: str
     offers: {
       '@type': 'Offer',
       price: product.price,
-      priceCurrency: 'INR',
+      priceCurrency: 'INR', 
       availability: product.inStock !== false ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       url: `https://driprr.com/product/${product.id}`,
     },
